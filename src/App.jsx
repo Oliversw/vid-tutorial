@@ -5,6 +5,11 @@ function App() {
   const [list, setList] = useState([]);
 
   useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
+    console.log("Fetching data");
     fetch("https://lingumi-take-home-test-server.herokuapp.com/videoTutorials")
       .then((res) => {
         return res.json();
@@ -12,7 +17,7 @@ function App() {
       .then((data) => {
         setList(data);
       });
-  }, []);
+  };
 
   const renderVids = function (vidList, num) {
     const shortList = vidList.slice(0, num);
@@ -36,6 +41,7 @@ function App() {
           <p>Loading...</p>
         ) : (
           <>
+            <button onClick={fetchData}>Refresh</button>
             <ul>{renderVids(list, 10)}</ul>
           </>
         )}
