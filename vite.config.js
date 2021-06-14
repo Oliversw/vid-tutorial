@@ -1,3 +1,5 @@
+//  Part of Vite React boilerplate 
+
 import { defineConfig } from 'vite'
 import reactRefresh from '@vitejs/plugin-react-refresh'
 
