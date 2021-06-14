@@ -1,11 +1,44 @@
-import React from "react";
-import "./App.css";
+import React, { useState, useEffect } from "react";
+import "./styles/App.css";
 
 function App() {
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    fetch("https://lingumi-take-home-test-server.herokuapp.com/videoTutorials")
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setList(data);
+      });
+  }, []);
+
+  const renderVids = function (vidList, num) {
+    const shortList = vidList.slice(0, num);
+    return shortList.map((el, ind) => {
+      return (
+        <li key={"vid" + ind}>
+          <a href={el.videoUrl}>
+            <p>{el.videoTitle}</p>
+          </a>
+          <p>Teacher: {el.teacherName}</p>
+        </li>
+      );
+    });
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <p>Hello Vite + React!</p>
+        <h1>Vid-Tutorial</h1>
+        {list.length === 0 ? (
+          <p>Loading...</p>
+        ) : (
+          <>
+            <ul>{renderVids(list, 10)}</ul>
+          </>
+        )}
       </header>
     </div>
   );
