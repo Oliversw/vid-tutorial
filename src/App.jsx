@@ -76,6 +76,7 @@ function App() {
   };
 
   const searchForTutorials = () => {
+    if (searchTerms === "") return;
     setRenderList(searchForTerm(list, searchTerms));
   };
 
