@@ -8,11 +8,9 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [searchMethod, setSearchMethod] = useState("");
   const [searchTerms, setSearchTerms] = useState("");
-  // const [searchTags, setSearchTags] = useState([]);
 
   useEffect(() => {
     fetchData();
-    sortByRating(list);
   }, []);
 
   const fetchData = () => {
@@ -20,12 +18,21 @@ function App() {
     setLoading(true);
     fetch("https://lingumi-take-home-test-server.herokuapp.com/videoTutorials")
       .then((res) => {
+        if (!res.ok) throw Error(res.statusText);
+        return res;
+      })
+      .then((res) => {
         return res.json();
       })
       .then((data) => {
         setList(data);
-        setRenderList(data.slice(0, 10));
+        setRenderList(data.slice(0, 20));
         setLoading(false);
+        sortByRating(data);
+        return;
+      })
+      .catch((error) => {
+        throw Error(error);
       });
   };
 
@@ -43,7 +50,7 @@ function App() {
     });
   };
 
-  const searchByTerms = (list, terms) => {
+  const searchForTutorials = (list, terms) => {
     const condition = new RegExp(terms);
     const filteredList = list.filter((el) => {
       let result =
@@ -82,7 +89,7 @@ function App() {
     setSortedList(sorted);
   };
 
-  const searchTags = () => {
+  const getTopRatedTutorialsForTags = () => {
     // split the search input into an array with a max size of 5 elements and no empty elements
     // also make sure that capitalization matches that of JSON regardless of user input
     const tags = searchTerms
@@ -141,7 +148,7 @@ function App() {
                     setSearchTerms(e.target.value);
                   }}
                 ></input>
-                <button onClick={() => searchByTerms(list, searchTerms)}>
+                <button onClick={() => searchForTutorials(list, searchTerms)}>
                   Search
                 </button>
               </>
@@ -160,7 +167,9 @@ function App() {
                     setSearchTerms(e.target.value);
                   }}
                 ></input>
-                <button onClick={searchTags}>Search Tags</button>
+                <button onClick={getTopRatedTutorialsForTags}>
+                  Search Tags
+                </button>
               </>
             )}
 
