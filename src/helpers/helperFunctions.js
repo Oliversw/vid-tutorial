@@ -1,5 +1,4 @@
 export const searchForTerm = (list, terms) => {
-  if (terms === "") return [];
   // filter objects to check for matches in video titles or teacher names
   const condition = new RegExp(terms);
   const filteredList = list.filter((el) => {

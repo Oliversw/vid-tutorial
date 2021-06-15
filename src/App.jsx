@@ -81,6 +81,7 @@ function App() {
   };
 
   const getTopRatedTutorialsForTags = () => {
+    if (searchTerms === "") return;
     const tags = defineTags(searchTerms);
     const result = searchForTags(sortedList, tags);
     setRenderList(result);
