@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./styles/App.css";
-import { searchForTerm } from "./helpers/helperFunctions";
+import {
+  searchForTerm,
+  defineTags,
+  searchForTags,
+} from "./helpers/helperFunctions";
 
 function App() {
   const [list, setList] = useState([]);
@@ -83,37 +87,14 @@ function App() {
     setSortedList(sorted);
   };
 
-  const getTopRatedTutorialsForTags = () => {
-    // split the search input into an array with a max size of 5 elements and no empty elements
-    // also make sure that capitalization matches that of JSON regardless of user input
-    const tags = searchTerms
-      .split(" ")
-      .filter((el) => el.length !== 0)
-      .slice(0, 5)
-      .map((el) => {
-        const lower = el.toLowerCase();
-        return lower[0].toUpperCase() + lower.substring(1);
-      });
-
-    let result = [];
-
-    // use for loop to iterate over sorted list so that we can break out upon reaching 20
-    for (let i = 0; i < sortedList.length; i++) {
-      // create array with input tags and search tags combined
-      const combined = [...tags, ...sortedList[i].tags];
-      // compare combined array against a set to find duplicates (i.e. matches) and push into array
-      if (combined.length !== new Set(combined).size) {
-        result.push(sortedList[i]);
-        if (result.length >= 20) {
-          i = sortedList.length;
-        }
-      }
-    }
-    setRenderList(result);
-  };
-
   const searchForTutorials = () => {
     setRenderList(searchForTerm(list, searchTerms));
+  };
+
+  const getTopRatedTutorialsForTags = () => {
+    const tags = defineTags(searchTerms);
+    const result = searchForTags(sortedList, tags);
+    setRenderList(result);
   };
 
   return (
