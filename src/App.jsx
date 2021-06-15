@@ -22,7 +22,6 @@ function App() {
   }, []);
 
   const fetchData = () => {
-    console.log("Fetching data");
     setLoading(true);
     fetch("https://lingumi-take-home-test-server.herokuapp.com/videoTutorials")
       .then((res) => {
