@@ -89,58 +89,53 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <>
-            <h1>Vid-Tutorial</h1>
-            <p>Filter results by:</p>
-            <select onChange={(e) => setSearchMethod(e.currentTarget.value)}>
-              <option value="">Choose an option</option>
-              <option value="term">Search term</option>
-              <option value="tags">Tags</option>
-            </select>
-            {searchMethod === "term" && (
-              <>
-                <p>
-                  Enter your search term and then press search. The input is
-                  case sensitive.
-                </p>
-                <input
-                  type="text"
-                  onChange={(e) => {
-                    setSearchTerms(e.target.value);
-                  }}
-                ></input>
-                <button onClick={() => searchForTutorials()}>Search</button>
-              </>
-            )}
-            {searchMethod === "tags" && (
-              <>
-                <p>
-                  Enter up to five tags that you would like to search for
-                  separated by spaces and then press search. The top 20 rated
-                  video tutorials, which contain any of the tags provided will
-                  be returned.
-                </p>
-                <input
-                  type="text"
-                  onChange={(e) => {
-                    setSearchTerms(e.target.value);
-                  }}
-                ></input>
-                <button onClick={getTopRatedTutorialsForTags}>
-                  Search Tags
-                </button>
-              </>
-            )}
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+          <h1 className="heading">Vid-Tutorial</h1>
+          <p>Filter results by:</p>
+          <select onChange={(e) => setSearchMethod(e.currentTarget.value)}>
+            <option value="">Choose an option</option>
+            <option value="term">Search term</option>
+            <option value="tags">Tags</option>
+          </select>
+          {searchMethod === "term" && (
+            <>
+              <p>
+                Enter your search term and then press search. The input is case
+                sensitive and will search through the video titles and teachers.
+              </p>
+              <input
+                type="text"
+                onChange={(e) => {
+                  setSearchTerms(e.target.value);
+                }}
+              ></input>
+              <button onClick={() => searchForTutorials()}>Search</button>
+            </>
+          )}
+          {searchMethod === "tags" && (
+            <>
+              <p>
+                Enter up to five tags that you would like to search for. The
+                tags should be separated by spaces. The search will return the
+                top 20 rated videos that match any of the included tags.
+              </p>
+              <input
+                type="text"
+                onChange={(e) => {
+                  setSearchTerms(e.target.value);
+                }}
+              ></input>
+              <button onClick={getTopRatedTutorialsForTags}>Search Tags</button>
+            </>
+          )}
 
-            <button onClick={refreshAll}>Refresh</button>
-            <ul>{renderVids(renderList)}</ul>
-          </>
-        )}
-      </header>
+          <button onClick={refreshAll}>Refresh</button>
+          <ul>{renderVids(renderList)}</ul>
+        </>
+      )}
     </div>
   );
 }
