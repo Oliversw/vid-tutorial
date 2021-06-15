@@ -41,3 +41,19 @@ export const searchForTags = (list, tagsArr) => {
   }
   return result;
 };
+
+export const sortByRating = (arr) => {
+  return [...arr].sort((a, b) => {
+    // function to sort an array of objects by averageUserRating
+    const ratingA = a.averageUserRating;
+    const ratingB = b.averageUserRating;
+
+    let comparison = 0;
+    if (ratingA > ratingB) {
+      comparison = 1;
+    } else if (ratingA < ratingB) {
+      comparison = -1;
+    }
+    return comparison * -1;
+  });
+};

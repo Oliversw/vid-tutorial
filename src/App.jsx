@@ -4,6 +4,7 @@ import {
   searchForTerm,
   defineTags,
   searchForTags,
+  sortByRating,
 } from "./helpers/helperFunctions";
 
 function App() {
@@ -35,7 +36,7 @@ function App() {
         setRenderList(data.slice(0, 20));
         setLoading(false);
         // sort data up front to reduce time spent sorting the tag function
-        sortByRating(data);
+        sortVideos(data);
         return;
       })
       .catch((error) => {
@@ -66,24 +67,8 @@ function App() {
     }
   };
 
-  const compareFunction = (a, b) => {
-    // function to sort an array of objects by averageUserRating
-    const ratingA = a.averageUserRating;
-    const ratingB = b.averageUserRating;
-
-    let comparison = 0;
-    if (ratingA > ratingB) {
-      comparison = 1;
-    } else if (ratingA < ratingB) {
-      comparison = -1;
-    }
-    return comparison * -1;
-  };
-
-  const sortByRating = (data) => {
-    // function to copy, sort and set the list as part of state
-    console.log("beginning sort");
-    const sorted = [...data].sort(compareFunction);
+  const sortVideos = (data) => {
+    const sorted = sortByRating(data);
     setSortedList(sorted);
   };
 
