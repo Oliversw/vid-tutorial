@@ -9,6 +9,7 @@ function App() {
   const [searchMethod, setSearchMethod] = useState("");
   const [searchTerms, setSearchTerms] = useState("");
 
+  // run initial fetch and state setting
   useEffect(() => {
     fetchData();
   }, []);
@@ -28,6 +29,7 @@ function App() {
         setList(data);
         setRenderList(data.slice(0, 20));
         setLoading(false);
+        // sort data up front to reduce time spent sorting the tag function
         sortByRating(data);
         return;
       })
@@ -36,36 +38,40 @@ function App() {
       });
   };
 
-  const renderVids = (vidList) => {
-    // const shortList = vidList.slice(0, num);
-    return vidList.map((el, ind) => {
-      return (
-        <li key={"vid" + ind}>
-          <a href={el.videoUrl}>
-            <p>{el.videoTitle}</p>
-          </a>
-          <p>Teacher: {el.teacherName}</p>
-        </li>
-      );
-    });
-  };
-
-  const searchForTutorials = (list, terms) => {
-    const condition = new RegExp(terms);
-    const filteredList = list.filter((el) => {
-      let result =
-        condition.test(el.videoTitle) || condition.test(el.teacherName);
-      console.log(result);
-      return result;
-    });
-    console.log(filteredList);
-    setRenderList(filteredList);
-  };
-
   const refreshAll = () => {
     fetchData();
     setSearchMethod("");
     setSearchTerms("");
+  };
+
+  const renderVids = (vidList) => {
+    if (vidList.length === 0) {
+      return <p>No results found</p>;
+    } else {
+      return vidList.map((el, ind) => {
+        return (
+          <li key={"vid" + ind}>
+            <a href={el.videoUrl}>
+              <p>{el.videoTitle}</p>
+            </a>
+            <p>Teacher: {el.teacherName}</p>
+          </li>
+        );
+      });
+    }
+  };
+
+  const searchForTutorials = (list, terms) => {
+    // filter objects to check for matches in video titles or teacher names
+    setLoading(true);
+    const condition = new RegExp(terms);
+    const filteredList = list.filter((el) => {
+      let result =
+        condition.test(el.videoTitle) || condition.test(el.teacherName);
+      return result;
+    });
+    setRenderList(filteredList);
+    setLoading(false);
   };
 
   const compareFunction = (a, b) => {
@@ -111,15 +117,13 @@ function App() {
       const combined = [...tags, ...sortedList[i].tags];
       // compare combined array against a set to find duplicates (i.e. matches) and push into array
       if (combined.length !== new Set(combined).size) {
-        console.log(sortedList[i]);
         result.push(sortedList[i]);
         if (result.length >= 20) {
-          console.log("res", result);
-          setRenderList(result);
           i = sortedList.length;
         }
       }
     }
+    setRenderList(result);
   };
 
   return (
