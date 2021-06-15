@@ -4,8 +4,6 @@
 
 - [Deployed version of the app](https://eloquent-lovelace-120bcb.netlify.app/)
 
-Please note that there seem to be some issues with CSS on the deployed version but since this was not the focus of this exercise I left it as it was.
-
 ## Run the project locally
 
 1. Download the repository to your local machine
@@ -27,11 +25,12 @@ Please note that there seem to be some issues with CSS on the deployed version b
 
 ## Known bugs and issues
 
-- pressing `enter` does not begin a search when typing in the search bar
+- Pressing `enter` does not begin a search when typing in the search bar
 - Searching for specific terms does not handle variations of capitalization or punctuation
 
 ## Features that I would like to have implemented
 
-- I would like to have made the rendered tags clickable, where it would then search the list for that tag
+- I would like to have made the rendered tags clickable, where it would then search the list for that tag. Something similar for teachers would be nice to have as well.
 - The user might find some kind of autocomplete or tag suggestion useful in the tag search, since it is not necessarily obvious what tags they can search for
 - Ultimately handling the returned data on the backend might be more efficient than doing all of the searching and filtering on the front end.
+- I would have liked to be able to write some more tests, possible some integration tests as the project is currently limited to unit tests.
