@@ -6,6 +6,7 @@ import {
   searchForTags,
   sortByRating,
 } from "./helpers/helperFunctions";
+import Video from "./components/Video.jsx";
 
 function App() {
   const [list, setList] = useState([]);
@@ -56,12 +57,14 @@ function App() {
     } else {
       return vidList.map((el, ind) => {
         return (
-          <li key={"vid" + ind}>
-            <a href={el.videoUrl}>
-              <p>{el.videoTitle}</p>
-            </a>
-            <p>Teacher: {el.teacherName}</p>
-          </li>
+          <Video
+            key={"vid" + ind}
+            url={el.videoUrl}
+            title={el.videoTitle}
+            teacher={el.teacherName}
+            tags={el.tags}
+            rating={el.averageUserRating}
+          />
         );
       });
     }
