@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./styles/App.css";
+import { searchForTerm } from "./helpers/helperFunctions";
 
 function App() {
   const [list, setList] = useState([]);
@@ -61,19 +62,6 @@ function App() {
     }
   };
 
-  const searchForTutorials = (list, terms) => {
-    // filter objects to check for matches in video titles or teacher names
-    setLoading(true);
-    const condition = new RegExp(terms);
-    const filteredList = list.filter((el) => {
-      let result =
-        condition.test(el.videoTitle) || condition.test(el.teacherName);
-      return result;
-    });
-    setRenderList(filteredList);
-    setLoading(false);
-  };
-
   const compareFunction = (a, b) => {
     // function to sort an array of objects by averageUserRating
     const ratingA = a.averageUserRating;
@@ -107,8 +95,6 @@ function App() {
         return lower[0].toUpperCase() + lower.substring(1);
       });
 
-    console.log(tags);
-
     let result = [];
 
     // use for loop to iterate over sorted list so that we can break out upon reaching 20
@@ -124,6 +110,10 @@ function App() {
       }
     }
     setRenderList(result);
+  };
+
+  const searchForTutorials = () => {
+    setRenderList(searchForTerm(list, searchTerms));
   };
 
   return (
@@ -152,9 +142,7 @@ function App() {
                     setSearchTerms(e.target.value);
                   }}
                 ></input>
-                <button onClick={() => searchForTutorials(list, searchTerms)}>
-                  Search
-                </button>
+                <button onClick={() => searchForTutorials()}>Search</button>
               </>
             )}
             {searchMethod === "tags" && (
